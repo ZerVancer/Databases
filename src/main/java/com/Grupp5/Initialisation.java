@@ -35,7 +35,7 @@ public class Initialisation {
 
   private void createTransactionsTable(Connection conSQL) {
     try {
-      conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int NOT NULL, timestamp TIMESTAMP DEFAULT NOW() NOT NULL, userID UUID REFERENCES users(userID) NOT NULL)");
+      conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int NOT NULL, timestamp TIMESTAMP DEFAULT NOW() NOT NULL, userID UUID, FOREIGN KEY (userID) REFERENCES users(userID))");
     } catch (SQLException e) {
       System.out.println("createTransactionsTable");
     }
