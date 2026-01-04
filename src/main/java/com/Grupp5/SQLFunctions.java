@@ -7,14 +7,26 @@ public class SQLFunctions {
 
   public void addTransaction(Connection conSQL, UUID userID, Transaction transaction) {
     try {
-      PreparedStatement transactionStatement = conSQL.prepareStatement("INSERT INTO transactions (amount, timestamp, userID) VALUES (?, ?, ?)");
-      transactionStatement.setInt(1, transaction.getAmount());
-      transactionStatement.setObject(2, transaction.getTimeStamp());
-      transactionStatement.setObject(3, userID);
+      PreparedStatement transactionStatement = conSQL.prepareStatement("INSERT INTO transactions VALUES (?, ?, ?, ?)");
+      transactionStatement.setObject(1, transaction.getTransactionID());
+      transactionStatement.setInt(2, transaction.getAmount());
+      transactionStatement.setObject(3, transaction.getTimeStamp());
+      transactionStatement.setObject(4, userID);
       transactionStatement.execute();
       transactionStatement.close();
     } catch (SQLException e) {
-      System.out.println("E");
+      System.out.println("addTransaction");
+    }
+  }
+
+  public void deleteTransaction(Connection conSQL, UUID transactionID) {
+    try {
+      PreparedStatement preparedStatement = conSQL.prepareStatement("DELETE FROM transactions WHERE transactionID = ?");
+      preparedStatement.setObject(1, transactionID);
+      preparedStatement.execute();
+      preparedStatement.close();
+    } catch (SQLException e) {
+      System.out.println("deleteTransaction");
     }
   }
 
@@ -26,16 +38,16 @@ public class SQLFunctions {
       preparedStatement.execute();
       preparedStatement.close();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println("addUser");
     }
   }
 
   public User getUser(Connection conSQL, String username, String password) {
-    UUID userID;
+    UUID userID = null;
     Wallet wallet = new Wallet();
     try {
       PreparedStatement userStatement = conSQL.prepareStatement("SELECT userID FROM users WHERE username = ? AND password = ? ");
-      PreparedStatement transactionStatement = conSQL.prepareStatement("SELECT amount, timestamp FROM transactions WHERE userid = ?");
+      PreparedStatement transactionStatement = conSQL.prepareStatement("SELECT * FROM transactions WHERE userid = ?");
       userStatement.setString(1, username);
       userStatement.setString(2, password);
       ResultSet resultSetUser = userStatement.executeQuery();
@@ -45,14 +57,15 @@ public class SQLFunctions {
         transactionStatement.setObject(1, userID);
         ResultSet resultSetTransaction = transactionStatement.executeQuery();
         while (resultSetTransaction.next()) {
+          UUID transactionID = (UUID) resultSetTransaction.getObject("transactionID");
           int amount = resultSetTransaction.getInt("amount");
           wallet.addToBalance(amount);
           Timestamp timestamp = (Timestamp) resultSetTransaction.getObject("timestamp");
-          wallet.addTransaction(new Transaction(amount, timestamp));
+          wallet.addTransaction(new Transaction(transactionID, amount, timestamp));
         }
       } else return null;
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println("getUser");
     }
     return new User(userID, username, wallet);
   }
@@ -64,12 +77,11 @@ public class SQLFunctions {
       if (tables.next()) {
         tables.close();
         return true;
-      } else {
-        tables.close();
-        return false;
       }
+      tables.close();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println("existsUser");
     }
+    return false;
   }
 }

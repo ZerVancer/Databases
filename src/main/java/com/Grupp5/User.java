@@ -27,9 +27,9 @@ public class User {
 //    ufr.addTransaction(this);
 //  }
 //
-//  public Wallet getWallet() {
-//    return wallet;
-//  }
+  public Wallet getWallet() {
+    return wallet;
+  }
   public String getUsername() {
     return username;
   }

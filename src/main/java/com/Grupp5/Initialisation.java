@@ -19,8 +19,8 @@ public class Initialisation {
         clearTables(conSQL);
 
         System.out.println(2);
-        createUserTable(conSQL);
-        createTransactionTable(conSQL);
+        createUsersTable(conSQL);
+        createTransactionsTable(conSQL);
         System.out.println(3);
 
         PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
@@ -42,33 +42,37 @@ public class Initialisation {
 
         return conSQL;
       } catch (SQLException e) {
-        System.out.println("No name");
+        System.out.println("Init run");
       }
     }
     return null;
   }
 
-  private void createTransactionTable(Connection conSQL) {
+  private void createTransactionsTable(Connection conSQL) {
     try {
       System.out.println(11);
       conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int, timestamp TIMESTAMP DEFAULT NOW(), userID UUID REFERENCES users(userID))");
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println("createTransactionsTable");
     }
   }
 
-  private void createUserTable(Connection conSQL) {
+  private void createUsersTable(Connection conSQL) {
     try {
       System.out.println(12);
       Statement statement = conSQL.createStatement();
       statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT, password TEXT)");
       statement.close();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println("createUsersable");
     }
   }
 
   private void clearTables(Connection conSQL) throws SQLException {
-    conSQL.createStatement().execute("DROP TABLE transactions; DROP TABLE users");
+    try {
+      conSQL.createStatement().execute("DROP TABLE transactions; DROP TABLE users");
+    } catch (SQLException e) {
+      System.out.println("clearTables");
+    }
   }
 }
