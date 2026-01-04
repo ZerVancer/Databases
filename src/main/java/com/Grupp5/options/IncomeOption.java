@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class IncomeOption extends Option {
   public IncomeOption(Application application) {
-    super("Income", 2, application);
+    super("Income", application);
   }
 
   @Override

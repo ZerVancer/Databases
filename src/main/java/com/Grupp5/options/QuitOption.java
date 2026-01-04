@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class QuitOption extends Option {
   public QuitOption(Application application) {
-    super("Quit", 1, application);
+    super("Quit", application);
   }
 
   @Override

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ReturnOption extends Option {
   public ReturnOption(Application application) {
-    super("Return", 1, application);
+    super("Return", application);
   }
 
   @Override

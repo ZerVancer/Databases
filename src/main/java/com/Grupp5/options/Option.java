@@ -8,11 +8,9 @@ import java.io.IOException;
 public abstract class Option {
   private final String name;
   protected Application application;
-  protected int numberOfCommands;
 
-  protected Option(String name, int numberOfCommands, Application application) {
+  public Option(String name, Application application) {
     this.name = name;
-    this.numberOfCommands = numberOfCommands;
     this.application = application;
   }
 
@@ -20,9 +18,5 @@ public abstract class Option {
 
   public String getName() {
     return name;
-  }
-
-  public int getNumberOfCommands() {
-    return numberOfCommands;
   }
 }

@@ -5,7 +5,7 @@ import com.Grupp5.Application;
 import java.io.IOException;
 
 public class DepositOption extends Option {
-  public DepositOption(Application application) { super("Deposit" , 2, application); }
+  public DepositOption(Application application) { super("Deposit" , application); }
 
   @Override
   public void run(String[] parsedInput) throws IOException {

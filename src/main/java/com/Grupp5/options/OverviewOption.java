@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class OverviewOption extends Option {
   public OverviewOption(Application application) {
-    super("Overview", 1, application);
+    super("Overview", application);
   }
 
   @Override

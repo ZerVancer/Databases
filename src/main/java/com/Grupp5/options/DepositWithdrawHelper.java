@@ -10,6 +10,7 @@ public class DepositWithdrawHelper {
     int signifier = application.getUser().getWallet().getSignifier();
     try {
       int amount = Integer.parseInt(input);
+      System.out.println(amount);
       if (amount > 0) {
         application.getUser().addTransaction(amount, signifier);
         if (signifier == 1) {

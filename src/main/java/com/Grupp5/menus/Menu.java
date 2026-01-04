@@ -23,7 +23,7 @@ public abstract class Menu {
   public void runOption(String input) throws IOException {
     String[] parsedInput = input.split(" ");
     Option option = Arrays.stream(options).filter((o) -> o.getName().equalsIgnoreCase(parsedInput[0])).findFirst().orElse(null);
-    if (option != null && parsedInput.length == option.getNumberOfCommands()) {
+    if (option != null) {
         option.run(parsedInput);
         return;
     }

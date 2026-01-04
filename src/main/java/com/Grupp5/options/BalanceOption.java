@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class BalanceOption extends Option {
   public BalanceOption(Application application) {
-    super("Balance", 1, application);
+    super("Balance", application);
   }
 
   @Override

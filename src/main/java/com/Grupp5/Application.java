@@ -1,10 +1,9 @@
 package com.Grupp5;
 
-import com.Grupp5.menus.LoginMenu;
+import com.Grupp5.menus.LoginRegisterMenu;
 import com.Grupp5.menus.Menu;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 public class Application {
   private boolean running = true;
@@ -14,7 +13,7 @@ public class Application {
   public void run() {
 
     try {
-      this.setMenu(new LoginMenu(this));
+      this.setMenu(new LoginRegisterMenu(this));
 
       while (this.running) {
         String input = Input.getString();

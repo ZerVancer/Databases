@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class WithdrawOption extends Option {
   public WithdrawOption(Application application) {
-    super("Withdraw", 2, application);
+    super("Withdraw", application);
   }
 
   @Override

@@ -11,6 +11,7 @@ public class MainMenu extends Menu {
       new DepositOption(application),
       new WithdrawOption(application),
       new OverviewOption(application),
+      new LogoutOption(application),
       new QuitOption(application)
   };
 

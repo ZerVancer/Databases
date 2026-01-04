@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ExpensesOption extends Option {
   public ExpensesOption(Application application) {
-    super("Expenses", 2, application);
+    super("Expenses", application);
   }
 
   @Override
