@@ -33,10 +33,7 @@ public class SQLFunctions {
     }
   }
 
-  public boolean addUser(String username, String password) {
-    if (existsUser(username)) {
-      return false;
-    }
+  public void addUser(String username, String password) {
     try {
       PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
       preparedStatement.setString(1, username);
@@ -46,7 +43,6 @@ public class SQLFunctions {
     } catch (SQLException e) {
       System.out.println("addUser");
     }
-    return true;
   }
 
   public User getUser(String username, String password) {
