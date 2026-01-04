@@ -1,22 +1,25 @@
 package com.Grupp5;
 
-import java.io.IOException;
+import java.util.UUID;
 
 public class User {
 
+  private final UUID uuid;
   private final String username;
-  //private final Wallet wallet;
+  private final Wallet wallet;
 
-  public User(String username) {
+  public User(UUID uuid, String username) {
+    this.uuid = uuid;
     this.username = username;
-    //this.wallet = ufr.getUser(username).getWallet();
+    this.wallet = new Wallet();
   }
-//
-//  public User(String username, Wallet wallet) {
-//    this.username = username;
-//    this.wallet = wallet;
-//  }
-//
+
+  public User(UUID uuid, String username, Wallet wallet) {
+    this.uuid = uuid;
+    this.username = username;
+    this.wallet = wallet;
+  }
+
 //  public void addTransaction(int amount, int signifier) {
 //    int result = amount*signifier;
 //    wallet.addToBalance(result);
@@ -29,5 +32,8 @@ public class User {
 //  }
   public String getUsername() {
     return username;
+  }
+  public UUID getUUID() {
+    return uuid;
   }
 }

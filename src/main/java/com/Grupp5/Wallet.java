@@ -33,9 +33,9 @@ public class Wallet {
 
     for (Transaction transaction : getTransactions()) {
       int amount = transaction.getAmount();
-      year = transaction.getTimeStamp().getYear();
+      year = transaction.getLocalTimeDate().getYear();
       if (amount*signifier > 0) {
-        if (getTransactionPeriod(transaction, period) == time && transaction.getTimeStamp().getYear() == year) {
+        if (getTransactionPeriod(transaction, period) == time && transaction.getLocalTimeDate().getYear() == year) {
           total += transaction.getAmount();
         } else {
           pei = new PeriodicExpensesAndIncome(year, total);
@@ -58,13 +58,13 @@ public class Wallet {
 
   private int getTransactionPeriod(Transaction transaction, Period period) {
     return switch (period) {
-      case YEAR -> transaction.getTimeStamp().getYear();
-      case MONTH -> transaction.getTimeStamp().getMonthValue();
+      case YEAR -> transaction.getLocalTimeDate().getYear();
+      case MONTH -> transaction.getLocalTimeDate().getMonthValue();
       case WEEK -> {
         TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
-        yield transaction.getTimeStamp().get(woy);
+        yield transaction.getLocalTimeDate().get(woy);
       }
-      case DAY -> transaction.getTimeStamp().getDayOfYear();
+      case DAY -> transaction.getLocalTimeDate().getDayOfYear();
     };
   }
 

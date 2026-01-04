@@ -1,21 +1,23 @@
 package com.Grupp5;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Transaction {
   private final int amount;
-  private final LocalDateTime timeStamp;
+  private final Timestamp timeStamp;
 
   public Transaction(int amount) {
     this.amount = amount;
-    this.timeStamp = LocalDateTime.now();
+    this.timeStamp = new Timestamp(System.currentTimeMillis());
   }
 
-  public Transaction(int amount, LocalDateTime date) {
+  public Transaction(int amount, Timestamp timestamp) {
     this.amount = amount;
-    this.timeStamp = date;
+    this.timeStamp = timestamp;
   }
 
   public int getAmount() { return amount; }
-  public LocalDateTime getTimeStamp() { return timeStamp; }
+  public Timestamp getTimeStamp() { return timeStamp; }
+  public LocalDateTime getLocalTimeDate() { return timeStamp.toLocalDateTime(); }
 }

@@ -23,8 +23,9 @@ public class Initialisation {
         createTransactionTable(conSQL);
         System.out.println(3);
 
-        PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username) VALUES (?)");
+        PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
         preparedStatement.setString(1, "name");
+        preparedStatement.setString(2, "password");
         System.out.println(4);
 
         preparedStatement.execute();
@@ -60,7 +61,7 @@ public class Initialisation {
     try {
       System.out.println(12);
       Statement statement = conSQL.createStatement();
-      statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT, balance int DEFAULT 0)");
+      statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT, password TEXT)");
       statement.close();
     } catch (SQLException e) {
       throw new RuntimeException(e);
