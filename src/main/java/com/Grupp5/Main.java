@@ -4,11 +4,10 @@ import java.sql.Connection;
 
 public class Main {
   public static void main(String[] args) {
-    Initialisation init = new Initialisation();
-    Connection conSQL = init.run();
+    new Initialisation().run();
 
     Application application = new Application();
-    application.run(conSQL);
+    application.run();
 
     System.out.println("Program ran to completion");
   }

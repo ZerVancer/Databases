@@ -10,6 +10,7 @@ public class Transaction {
   private final Timestamp timeStamp;
 
   public Transaction(int amount) {
+    this.transactionID = UUID.randomUUID();
     this.amount = amount;
     this.timeStamp = new Timestamp(System.currentTimeMillis());
   }

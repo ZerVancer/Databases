@@ -3,54 +3,45 @@ package com.Grupp5;
 import java.sql.*;
 
 public class Initialisation {
-  public Connection run(){
+  public void run(){
     String dbName = "postgres";
     String username = "postgres";
     String password = "password";
     String conString = "jdbc:postgresql://localhost/" + dbName;
-    Connection conSQL;
 
     {
       try {
-        System.out.println(1);
-        conSQL = DriverManager.getConnection(conString, username, password);
+        SQLFunctions.conSQL = DriverManager.getConnection(conString, username, password);
+        Connection conSQL = SQLFunctions.conSQL;
         Statement statement = conSQL.createStatement();
 
         clearTables(conSQL);
 
-        System.out.println(2);
         createUsersTable(conSQL);
         createTransactionsTable(conSQL);
-        System.out.println(3);
 
         PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
         preparedStatement.setString(1, "name");
         preparedStatement.setString(2, "password");
-        System.out.println(4);
 
         preparedStatement.execute();
         preparedStatement.close();
-        System.out.println(5);
 
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+        System.out.println("All users:");
         while (resultSet.next()) {
           String col1 = resultSet.getString("username");
-          System.out.println(col1);
+          System.out.println("- " + col1);
         }
         resultSet.close();
-        System.out.println(6);
-
-        return conSQL;
       } catch (SQLException e) {
         System.out.println("Init run");
       }
     }
-    return null;
   }
 
   private void createTransactionsTable(Connection conSQL) {
     try {
-      System.out.println(11);
       conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int, timestamp TIMESTAMP DEFAULT NOW(), userID UUID REFERENCES users(userID))");
     } catch (SQLException e) {
       System.out.println("createTransactionsTable");
@@ -59,7 +50,6 @@ public class Initialisation {
 
   private void createUsersTable(Connection conSQL) {
     try {
-      System.out.println(12);
       Statement statement = conSQL.createStatement();
       statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT, password TEXT)");
       statement.close();

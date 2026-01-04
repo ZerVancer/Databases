@@ -20,13 +20,15 @@ public class User {
     this.wallet = wallet;
   }
 
-//  public void addTransaction(int amount, int signifier) {
-//    int result = amount*signifier;
-//    wallet.addToBalance(result);
-//    wallet.addTransaction(new Transaction(result));
-//    ufr.addTransaction(this);
-//  }
-//
+  public void addTransaction(int amount, int signifier) {
+    int result = amount*signifier;
+    wallet.addToBalance(result);
+    Transaction transaction = new Transaction(result);
+    wallet.addTransaction(transaction);
+    SQLFunctions sqlFunctions = new SQLFunctions();
+    sqlFunctions.addTransaction(uuid, transaction);
+  }
+
   public Wallet getWallet() {
     return wallet;
   }

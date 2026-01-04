@@ -4,8 +4,9 @@ import java.sql.*;
 import java.util.UUID;
 
 public class SQLFunctions {
+  public static Connection conSQL;
 
-  public void addTransaction(Connection conSQL, UUID userID, Transaction transaction) {
+  public void addTransaction(UUID userID, Transaction transaction) {
     try {
       PreparedStatement transactionStatement = conSQL.prepareStatement("INSERT INTO transactions VALUES (?, ?, ?, ?)");
       transactionStatement.setObject(1, transaction.getTransactionID());
@@ -19,7 +20,7 @@ public class SQLFunctions {
     }
   }
 
-  public void deleteTransaction(Connection conSQL, UUID transactionID) {
+  public void deleteTransaction(UUID transactionID) {
     try {
       PreparedStatement preparedStatement = conSQL.prepareStatement("DELETE FROM transactions WHERE transactionID = ?");
       preparedStatement.setObject(1, transactionID);
@@ -30,7 +31,7 @@ public class SQLFunctions {
     }
   }
 
-  public void addUser(Connection conSQL, String username, String password) {
+  public void addUser(String username, String password) {
     try {
       PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
       preparedStatement.setString(1, username);
@@ -42,7 +43,7 @@ public class SQLFunctions {
     }
   }
 
-  public User getUser(Connection conSQL, String username, String password) {
+  public User getUser(String username, String password) {
     UUID userID = null;
     Wallet wallet = new Wallet();
     try {
@@ -70,7 +71,7 @@ public class SQLFunctions {
     return new User(userID, username, wallet);
   }
 
-  public boolean existsUser(Connection conSQL, String username) {
+  public boolean existsUser(String username) {
     try {
       DatabaseMetaData dbm = conSQL.getMetaData();
       ResultSet tables = dbm.getTables(null, null, username, null);
