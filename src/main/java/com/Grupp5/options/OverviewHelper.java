@@ -1,8 +1,8 @@
 package com.Grupp5.options;
 
 import com.Grupp5.Application;
-import com.Grupp5.Period;
-import com.Grupp5.PeriodicExpensesAndIncome;
+import com.Grupp5.data.Period;
+import com.Grupp5.data.PeriodicExpensesAndIncome;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,22 +1,21 @@
-package com.Grupp5;
+package com.Grupp5.data;
+
+import com.Grupp5.SQLFunctions;
 
 import java.util.UUID;
 
 public class User {
 
   private final UUID uuid;
-  private final String username;
   private final Wallet wallet;
 
-  public User(UUID uuid, String username) {
+  public User(UUID uuid) {
     this.uuid = uuid;
-    this.username = username;
     this.wallet = new Wallet();
   }
 
-  public User(UUID uuid, String username, Wallet wallet) {
+  public User(UUID uuid, Wallet wallet) {
     this.uuid = uuid;
-    this.username = username;
     this.wallet = wallet;
   }
 
@@ -31,9 +30,6 @@ public class User {
 
   public Wallet getWallet() {
     return wallet;
-  }
-  public String getUsername() {
-    return username;
   }
   public UUID getUUID() {
     return uuid;

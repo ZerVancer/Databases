@@ -1,5 +1,7 @@
 package com.Grupp5;
 
+import com.Grupp5.data.Input;
+
 import java.sql.*;
 
 public class Initialisation {
@@ -15,17 +17,8 @@ public class Initialisation {
         Connection conSQL = SQLFunctions.conSQL;
         Statement statement = conSQL.createStatement();
 
-        clearTables(conSQL);
-
         createUsersTable(conSQL);
         createTransactionsTable(conSQL);
-
-        PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "password");
-
-        preparedStatement.execute();
-        preparedStatement.close();
 
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
         System.out.println("All users:");
@@ -42,7 +35,7 @@ public class Initialisation {
 
   private void createTransactionsTable(Connection conSQL) {
     try {
-      conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int, timestamp TIMESTAMP DEFAULT NOW(), userID UUID REFERENCES users(userID))");
+      conSQL.createStatement().execute("CREATE TABLE IF NOT EXISTS transactions(transactionID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), amount int NOT NULL, timestamp TIMESTAMP DEFAULT NOW() NOT NULL, userID UUID REFERENCES users(userID) NOT NULL)");
     } catch (SQLException e) {
       System.out.println("createTransactionsTable");
     }
@@ -51,10 +44,10 @@ public class Initialisation {
   private void createUsersTable(Connection conSQL) {
     try {
       Statement statement = conSQL.createStatement();
-      statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT, password TEXT)");
+      statement.execute("CREATE TABLE IF NOT EXISTS users(userID UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT NOT NULL UNIQUE, password TEXT NOT NULL)");
       statement.close();
     } catch (SQLException e) {
-      System.out.println("createUsersable");
+      System.out.println("createUsersTable");
     }
   }
 

@@ -1,4 +1,4 @@
-package com.Grupp5;
+package com.Grupp5.data;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

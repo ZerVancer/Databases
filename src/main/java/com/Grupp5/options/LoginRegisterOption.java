@@ -1,9 +1,9 @@
 package com.Grupp5.options;
 
 import com.Grupp5.Application;
-import com.Grupp5.Input;
+import com.Grupp5.data.Input;
 import com.Grupp5.SQLFunctions;
-import com.Grupp5.User;
+import com.Grupp5.data.User;
 import com.Grupp5.menus.LoginRegisterMenu;
 import com.Grupp5.menus.MainMenu;
 
@@ -36,9 +36,14 @@ public class LoginRegisterOption extends Option{
         user = sqlFunctions.getUser(username, password);
         break;
       case "register":
-        sqlFunctions.addUser(username, password);
-        System.out.println("User added");
-        application.setMenu(new LoginRegisterMenu(application));
+        if (!sqlFunctions.existsUser(username)) {
+          sqlFunctions.addUser(username, password);
+          System.out.println("User added");
+          application.setMenu(new LoginRegisterMenu(application));
+        } else {
+          System.out.println("User already exists");
+          application.setMenu(new LoginRegisterMenu(application));
+        }
         return;
       default:
         System.out.println("Incorrect option, try again");
@@ -53,14 +58,6 @@ public class LoginRegisterOption extends Option{
     application.setUser(user);
 
     application.setMenu(new MainMenu(application));
-  }
-
-  private void login() {
-
-  }
-
-  private void register() {
-
   }
 
   boolean validUser(String username) {

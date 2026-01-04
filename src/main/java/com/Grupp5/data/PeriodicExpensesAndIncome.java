@@ -1,4 +1,4 @@
-package com.Grupp5;
+package com.Grupp5.data;
 
 public class PeriodicExpensesAndIncome {
   private final int year;

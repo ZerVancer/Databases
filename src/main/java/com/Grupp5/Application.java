@@ -1,5 +1,7 @@
 package com.Grupp5;
 
+import com.Grupp5.data.Input;
+import com.Grupp5.data.User;
 import com.Grupp5.menus.LoginRegisterMenu;
 import com.Grupp5.menus.Menu;
 

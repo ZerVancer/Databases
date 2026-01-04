@@ -1,4 +1,4 @@
-package com.Grupp5;
+package com.Grupp5.data;
 
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;

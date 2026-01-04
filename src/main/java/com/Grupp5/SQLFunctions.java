@@ -1,5 +1,7 @@
 package com.Grupp5;
 
+import com.Grupp5.data.*;
+
 import java.sql.*;
 import java.util.UUID;
 
@@ -31,16 +33,20 @@ public class SQLFunctions {
     }
   }
 
-  public void addUser(String username, String password) {
+  public boolean addUser(String username, String password) {
+    if (existsUser(username)) {
+      return false;
+    }
     try {
       PreparedStatement preparedStatement = conSQL.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
       preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
+      preparedStatement.setString(2, PasswordHasher.hash(password));
       preparedStatement.execute();
       preparedStatement.close();
     } catch (SQLException e) {
       System.out.println("addUser");
     }
+    return true;
   }
 
   public User getUser(String username, String password) {
@@ -50,7 +56,7 @@ public class SQLFunctions {
       PreparedStatement userStatement = conSQL.prepareStatement("SELECT userID FROM users WHERE username = ? AND password = ? ");
       PreparedStatement transactionStatement = conSQL.prepareStatement("SELECT * FROM transactions WHERE userid = ?");
       userStatement.setString(1, username);
-      userStatement.setString(2, password);
+      userStatement.setString(2, PasswordHasher.hash(password));
       ResultSet resultSetUser = userStatement.executeQuery();
       if (resultSetUser.next()) {
         userID = (UUID) resultSetUser.getObject("userID");
@@ -68,21 +74,17 @@ public class SQLFunctions {
     } catch (SQLException e) {
       System.out.println("getUser");
     }
-    return new User(userID, username, wallet);
+    return new User(userID, wallet);
   }
 
   public boolean existsUser(String username) {
     try {
-      DatabaseMetaData dbm = conSQL.getMetaData();
-      ResultSet tables = dbm.getTables(null, null, username, null);
-      if (tables.next()) {
-        tables.close();
-        return true;
-      }
-      tables.close();
+      PreparedStatement preparedStatement = conSQL.prepareStatement("SELECT username FROM users WHERE username = ?");
+      preparedStatement.setString(1, username);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      return resultSet.next();
     } catch (SQLException e) {
-      System.out.println("existsUser");
+      throw new RuntimeException();
     }
-    return false;
   }
 }
