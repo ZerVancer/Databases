@@ -1,7 +1,5 @@
 package com.Grupp5;
 
-import com.Grupp5.data.Input;
-
 import java.sql.*;
 
 public class Initialisation {

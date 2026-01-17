@@ -49,24 +49,25 @@ public class SQLFunctions {
     UUID userID = null;
     Wallet wallet = new Wallet();
     try {
-      PreparedStatement userStatement = conSQL.prepareStatement("SELECT userID FROM users WHERE username = ? AND password = ? ");
-      PreparedStatement transactionStatement = conSQL.prepareStatement("SELECT * FROM transactions WHERE userid = ?");
-      userStatement.setString(1, username);
-      userStatement.setString(2, PasswordHasher.hash(password));
-      ResultSet resultSetUser = userStatement.executeQuery();
-      if (resultSetUser.next()) {
-        userID = (UUID) resultSetUser.getObject("userID");
-        resultSetUser.close();
-        transactionStatement.setObject(1, userID);
-        ResultSet resultSetTransaction = transactionStatement.executeQuery();
-        while (resultSetTransaction.next()) {
-          UUID transactionID = (UUID) resultSetTransaction.getObject("transactionID");
-          int amount = resultSetTransaction.getInt("amount");
+      PreparedStatement preparedStatement = conSQL.prepareStatement("SELECT users.userid, transactions.* FROM users LEFT JOIN transactions ON users.userID = transactions.userID WHERE users.username = ? AND users.password = ?");
+      preparedStatement.setString(1, username);
+      preparedStatement.setString(2, PasswordHasher.hash(password));
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (!resultSet.next()) return null;
+      userID = (UUID) resultSet.getObject("userID");
+
+      if (resultSet.getObject("transactionID") != null) {
+        do {
+          UUID transactionID = (UUID) resultSet.getObject("transactionID");
+          int amount = resultSet.getInt("amount");
           wallet.addToBalance(amount);
-          Timestamp timestamp = (Timestamp) resultSetTransaction.getObject("timestamp");
+          Timestamp timestamp = (Timestamp) resultSet.getObject("timestamp");
           wallet.addTransaction(new Transaction(transactionID, amount, timestamp));
-        }
-      } else return null;
+        } while (resultSet.next());
+      }
+      System.out.println(wallet.getTransactions().size());
+      preparedStatement.close();
+      resultSet.close();
     } catch (SQLException e) {
       System.out.println("getUser");
     }
